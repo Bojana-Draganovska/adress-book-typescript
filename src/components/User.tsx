@@ -29,6 +29,7 @@ const User = (props: Props) => {
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
 
     const dispatch = useDispatch();
 
@@ -53,8 +54,17 @@ const User = (props: Props) => {
     };
 
     const handleInputEmail = (e: any) => {
+        if (!isValidEmail(e.target.value)) {
+            setError('Email is invalid');
+        } else {
+            setError("")
+        }
         setEmail(e.target.value);
         checkValidation();
+    };
+
+    const isValidEmail = (email: any) => {
+        return /\S+@\S+\.\S+/.test(email);
     };
 
     const checkValidation = () => {
@@ -89,6 +99,7 @@ const User = (props: Props) => {
             <InformationStyled>Email:</InformationStyled>
             <InputStyled id="email" onChange={handleInputEmail} value={email} />
             {email != "" ? null : <ValidationMessage />}
+            {error != "" && email != "" ? <p style={{ color: 'red' }}>{error}</p> : null}
             <InformationStyled>Country:</InformationStyled>
             <CountryDivStyled>
                 {choosenCountry}
@@ -105,7 +116,7 @@ const User = (props: Props) => {
             </CountryDivStyled>
             {flag ? null : <ValidationMessage />}
             <ButtonContainerStyled
-                onClick={() => { setUserData(); setValidation(false) }}>
+                onClick={() => ((error != "") ? null : setUserData(), setValidation(false))}>
                 <Button title="Add Data" />
             </ButtonContainerStyled>
         </InfoContainerStyled>

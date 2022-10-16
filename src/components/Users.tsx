@@ -19,7 +19,6 @@ interface Props {
 
 const Users = (props: Props) => {
 
-    const store = useSelector(store => store);
     const dispatch = useDispatch();
 
     const [changeFlag, setChangeFlag] = React.useState<number>(-1);
@@ -27,12 +26,12 @@ const Users = (props: Props) => {
 
     const changeUser = (contact: any) => {
         dispatch(changeData(
-         {
-            id: contact.id,
-            name: changedName === "" ? contact.name : changedName,
-            surname: changedSurname === "" ? contact.surname : changedSurname,
-            email: changedEmail === "" ? contact.email : changedEmail,
-            country: changedCountry === "" ? contact.country : changedCountry,
+            {
+                id: contact.id,
+                name: changedName === "" ? contact.name : changedName,
+                surname: changedSurname === "" ? contact.surname : changedSurname,
+                email: changedEmail === "" ? contact.email : changedEmail,
+                country: changedCountry === "" ? contact.country : changedCountry,
             }
         ))
     };
@@ -67,8 +66,9 @@ const Users = (props: Props) => {
     return (
         <>
             {props.contacts.map((contact: any, i: number) => {
+
                 return (
-                    <AddedUser key={i} onClick={() => console.log(i)}>
+                    <AddedUser key={i}>
                         <AddedInfoDiv>
                             <AddedInfo>{contact.name}</AddedInfo>
                             {changeFlag === i ? <InputStyled id="name" value={changedName} onChange={handleInputChangedName} placeholder={"New Name"} /> : null}
@@ -86,11 +86,11 @@ const Users = (props: Props) => {
                             <div onClick={() => setChangeButton(!changeButton)}>
                                 {(changeButton === true) && (changeFlag === i)
                                     ?
-                                    <div onClick={() => { changeUser(contact); setChangeFlag(-1);}}>
+                                    <div onClick={() => { changeUser(contact); setChangeFlag(-1); }}>
                                         <Button title={"save"} />
                                     </div>
                                     :
-                                    <div onClick={() => {setChangeFlag(i);}} >
+                                    <div onClick={() => { setChangeFlag(i); }} >
                                         <Button title={"change"} />
                                     </div>
                                 }
